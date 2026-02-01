@@ -1,59 +1,34 @@
-# ---- 第 1 阶段：安装依赖 ----
-FROM node:20-alpine AS deps
+FROM node:lts-alpine
 
-# 启用 corepack 并激活 pnpm（Node20 默认提供 corepack）
-RUN corepack enable && corepack prepare pnpm@latest --activate
+LABEL maintainer="LibreTV Team"
+LABEL description="LibreTV - 免费在线视频搜索与观看平台"
 
+# 设置环境变量
+ENV PORT=8080
+ENV CORS_ORIGIN=*
+ENV DEBUG=false
+ENV REQUEST_TIMEOUT=5000
+ENV MAX_RETRIES=2
+ENV CACHE_MAX_AGE=1d
+
+# 设置工作目录
 WORKDIR /app
 
-# 仅复制依赖清单，提高构建缓存利用率
-COPY package.json pnpm-lock.yaml ./
+# 复制 package.json 和 package-lock.json（如果存在）
+COPY package*.json ./
 
-# 安装所有依赖（含 devDependencies，后续会裁剪）
-RUN pnpm install --frozen-lockfile
+# 安装依赖
+RUN npm ci --only=production && npm cache clean --force
 
-# ---- 第 2 阶段：构建项目 ----
-FROM node:20-alpine AS builder
-RUN corepack enable && corepack prepare pnpm@latest --activate
-WORKDIR /app
-
-# 复制依赖
-COPY --from=deps /app/node_modules ./node_modules
-# 复制全部源代码
+# 复制应用文件
 COPY . .
 
-# 在构建阶段也显式设置 DOCKER_ENV，
-ENV DOCKER_ENV=true
+# 暴露端口
+EXPOSE 8080
 
-# 生成生产构建
-RUN pnpm run build
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:8080', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
 
-# ---- 第 3 阶段：生成运行时镜像 ----
-FROM node:20-alpine AS runner
-
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && adduser -u 1001 -S nextjs -G nodejs
-
-WORKDIR /app
-ENV NODE_ENV=production
-ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
-ENV DOCKER_ENV=true
-
-# 从构建器中复制 standalone 输出
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-# 从构建器中复制 scripts 目录
-COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
-# 从构建器中复制 start.js
-COPY --from=builder --chown=nextjs:nodejs /app/start.js ./start.js
-# 从构建器中复制 public 和 .next/static 目录
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# 切换到非特权用户
-USER nextjs
-
-EXPOSE 3000
-
-# 使用自定义启动脚本，先预加载配置再启动服务器
-CMD ["node", "start.js"] 
+# 启动应用
+CMD ["npm", "start"]

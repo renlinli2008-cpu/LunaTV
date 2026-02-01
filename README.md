@@ -1,408 +1,176 @@
-# MoonTV
+# LibreTV - 免费在线视频搜索与观看平台
 
 <div align="center">
-  <img src="public/logo.png" alt="MoonTV Logo" width="120">
+  <img src="image/logo.png" alt="LibreTV Logo" width="120">
+  <br>
+  <p><strong>自由观影，畅享精彩</strong></p>
 </div>
 
-> 🎬 **MoonTV** 是一个开箱即用的、跨平台的影视聚合播放器。它基于 **Next.js 14** + **Tailwind&nbsp;CSS** + **TypeScript** 构建，支持多资源搜索、在线播放、收藏同步、播放记录、云端存储，让你可以随时随地畅享海量免费影视内容。
+## 📺 项目简介
 
-<div align="center">
+LibreTV 是一个轻量级、免费的在线视频搜索与观看平台，提供来自多个视频源的内容搜索与播放服务。无需注册，即开即用，支持多种设备访问。项目结合了前端技术和后端代理功能，可部署在支持服务端功能的各类网站托管服务上。**项目门户**： [libretv.is-an.org](https://libretv.is-an.org)
 
-![Next.js](https://img.shields.io/badge/Next.js-14-000?logo=nextdotjs)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38bdf8?logo=tailwindcss)
-![TypeScript](https://img.shields.io/badge/TypeScript-4.x-3178c6?logo=typescript)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Docker Ready](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
-
-</div>
-
----
-
-## ✨ 功能特性
-
-- 🔍 **多源聚合搜索**：一次搜索立刻返回全源结果。
-- 📄 **丰富详情页**：支持剧集列表、演员、年份、简介等完整信息展示。
-- ▶️ **流畅在线播放**：集成 HLS.js & ArtPlayer。
-- ❤️ **收藏 + 继续观看**：支持 Kvrocks/Redis/Upstash 存储，多端同步进度。
-- 📱 **PWA**：离线缓存、安装到桌面/主屏，移动端原生体验。
-- 🌗 **响应式布局**：桌面侧边栏 + 移动底部导航，自适应各种屏幕尺寸。
-- 👿 **智能去广告**：自动跳过视频中的切片广告（实验性）。
-
-### 注意：部署后项目为空壳项目，无内置播放源和直播源，需要自行收集
+本项目基于 [bestK/tv](https://github.com/bestK/tv) 进行重构与增强。
 
 <details>
   <summary>点击查看项目截图</summary>
-  <img src="public/screenshot1.png" alt="项目截图" style="max-width:600px">
-  <img src="public/screenshot2.png" alt="项目截图" style="max-width:600px">
-  <img src="public/screenshot3.png" alt="项目截图" style="max-width:600px">
+  <img src="https://github.com/user-attachments/assets/df485345-e83b-4564-adf7-0680be92d3c7" alt="项目截图" style="max-width:600px">
 </details>
 
-### 请不要在 B站、小红书、微信公众号、抖音、今日头条或其他中国大陆社交平台发布视频或文章宣传本项目，不授权任何“科技周刊/月刊”类项目或站点收录本项目。
+## 🚀 快速部署
 
-## 🗺 目录
+选择以下任一平台，点击一键部署按钮，即可快速创建自己的 LibreTV 实例：
 
-- [技术栈](#技术栈)
-- [部署](#部署)
-  - [一键部署](#zeabur-一键部署)
-  - [Docker 部署](#Kvrocks-存储推荐)
-- [配置文件](#配置文件)
-- [订阅](#订阅)
-- [自动更新](#自动更新)
-- [环境变量](#环境变量)
-- [客户端](#客户端)
-- [AndroidTV 使用](#AndroidTV-使用)
-- [Roadmap](#roadmap)
-- [安全与隐私提醒](#安全与隐私提醒)
-- [License](#license)
-- [致谢](#致谢)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FLibreSpark%2FLibreTV)  
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/LibreSpark/LibreTV)  
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/LibreSpark/LibreTV)
 
-## 技术栈
+## 🚨 重要声明
 
-| 分类      | 主要依赖                                                                                              |
-| --------- | ----------------------------------------------------------------------------------------------------- |
-| 前端框架  | [Next.js 14](https://nextjs.org/) · App Router                                                        |
-| UI & 样式 | [Tailwind&nbsp;CSS 3](https://tailwindcss.com/)                                                       |
-| 语言      | TypeScript 4                                                                                          |
-| 播放器    | [ArtPlayer](https://github.com/zhw2590582/ArtPlayer) · [HLS.js](https://github.com/video-dev/hls.js/) |
-| 代码质量  | ESLint · Prettier · Jest                                                                              |
-| 部署      | Docker                                                                    |
-
-## 部署
-
-本项目**仅支持 Docker 或其他基于 Docker 的平台** 部署。
-
-### zeabur 一键部署
-
-点击下方按钮即可一键部署，自动配置 LunaTV + Kvrocks 数据库：
-
-[![Deploy on Zeabur](https://zeabur.com/button.svg)](https://zeabur.com/templates/8MPTQU/deploy)
-
-**优势**：
-- ✅ 无需配置，一键启动（自动部署完整环境）
-- ✅ 自动 HTTPS 和全球 CDN 加速
-- ✅ 持久化存储，数据永不丢失
-- ✅ 免费额度足够个人使用
-
-**⚠️ 重要提示**：部署完成后，需要在 Zeabur 中为 LunaTV 服务设置访问域名（Domain）才能在浏览器中访问。详见下方 [设置访问域名](#5-设置访问域名必须) 步骤。
-
-### Kvrocks 存储（推荐）
-
-```yml
-services:
-  moontv-core:
-    image: ghcr.io/moontechlab/lunatv:latest
-    container_name: moontv-core
-    restart: on-failure
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=admin_password
-      - NEXT_PUBLIC_STORAGE_TYPE=kvrocks
-      - KVROCKS_URL=redis://moontv-kvrocks:6666
-    networks:
-      - moontv-network
-    depends_on:
-      - moontv-kvrocks
-  moontv-kvrocks:
-    image: apache/kvrocks
-    container_name: moontv-kvrocks
-    restart: unless-stopped
-    volumes:
-      - kvrocks-data:/var/lib/kvrocks
-    networks:
-      - moontv-network
-networks:
-  moontv-network:
-    driver: bridge
-volumes:
-  kvrocks-data:
-```
-
-### Redis 存储（有一定的丢数据风险）
-
-```yml
-services:
-  moontv-core:
-    image: ghcr.io/moontechlab/lunatv:latest
-    container_name: moontv-core
-    restart: on-failure
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=admin_password
-      - NEXT_PUBLIC_STORAGE_TYPE=redis
-      - REDIS_URL=redis://moontv-redis:6379
-    networks:
-      - moontv-network
-    depends_on:
-      - moontv-redis
-  moontv-redis:
-    image: redis:alpine
-    container_name: moontv-redis
-    restart: unless-stopped
-    networks:
-      - moontv-network
-    # 请开启持久化，否则升级/重启后数据丢失
-    volumes:
-      - ./data:/data
-networks:
-  moontv-network:
-    driver: bridge
-```
-
-### Upstash 存储
-
-1. 在 [upstash](https://upstash.com/) 注册账号并新建一个 Redis 实例，名称任意。
-2. 复制新数据库的 **HTTPS ENDPOINT 和 TOKEN**
-3. 使用如下 docker compose
-```yml
-services:
-  moontv-core:
-    image: ghcr.io/moontechlab/lunatv:latest
-    container_name: moontv-core
-    restart: on-failure
-    ports:
-      - '3000:3000'
-    environment:
-      - USERNAME=admin
-      - PASSWORD=admin_password
-      - NEXT_PUBLIC_STORAGE_TYPE=upstash
-      - UPSTASH_URL=上面 https 开头的 HTTPS ENDPOINT
-      - UPSTASH_TOKEN=上面的 TOKEN
-```
-
-### ☁️ Zeabur 部署（推荐）
-
-Thanks to @SzeMeng76
-
-Zeabur 是一站式云端部署平台，使用预构建的 Docker 镜像可以快速部署，无需等待构建。
-
-**部署步骤：**
-
-1. **添加 KVRocks 服务**（先添加数据库）
-   - 点击 "Add Service" > "Docker Images"
-   - 输入镜像名称：`apache/kvrocks`
-   - 配置端口：`6666` (TCP)
-   - **记住服务名称**（通常是 `apachekvrocks`）
-   - **配置持久化卷（重要）**：
-     * 在服务设置中找到 "Volumes" 部分
-     * 点击 "Add Volume" 添加新卷
-     * Volume ID: `kvrocks-data`（可自定义，仅支持字母、数字、连字符）
-     * Path: `/var/lib/kvrocks/db`
-     * 保存配置
-
-   > 💡 **重要提示**：持久化卷路径必须设置为 `/var/lib/kvrocks/db`（KVRocks 数据目录），这样配置文件保留在容器内，数据库文件持久化，重启后数据不会丢失！
-
-2. **添加 LunaTV 服务**
-   - 点击 "Add Service" > "Docker Images"
-   - 输入镜像名称：`ghcr.io/moontechlab/lunatv:latest`
-   - 配置端口：`3000` (HTTP)
-
-3. **配置环境变量**
-
-   在 LunaTV 服务的环境变量中添加：
-
-   ```env
-   # 必填：管理员账号
-   USERNAME=admin
-   PASSWORD=your_secure_password
-
-   # 必填：存储配置
-   NEXT_PUBLIC_STORAGE_TYPE=kvrocks
-   KVROCKS_URL=redis://apachekvrocks:6666
-
-   # 可选：站点配置
-   SITE_BASE=https://your-domain.zeabur.app
-   NEXT_PUBLIC_SITE_NAME=LunaTV Enhanced
-   ANNOUNCEMENT=欢迎使用 LunaTV Enhanced Edition
-
-   # 可选：豆瓣代理配置（推荐）
-   NEXT_PUBLIC_DOUBAN_PROXY_TYPE=cmliussss-cdn-tencent
-   NEXT_PUBLIC_DOUBAN_IMAGE_PROXY_TYPE=cmliussss-cdn-tencent
-   ```
-
-   **注意**：
-   - 使用服务名称作为主机名：`redis://apachekvrocks:6666`
-   - 如果服务名称不同，请替换为实际名称
-   - 两个服务必须在同一个 Project 中
-
-4. **部署完成**
-   - Zeabur 会自动拉取镜像并启动服务
-   - 等待服务就绪后，需要手动设置访问域名（见下一步）
-
-#### 5. 设置访问域名（必须）
-
-   - 在 LunaTV 服务页面，点击 "Networking" 或 "网络" 标签
-   - 点击 "Generate Domain" 生成 Zeabur 提供的免费域名（如 `xxx.zeabur.app`）
-   - 或者绑定自定义域名：
-     * 点击 "Add Domain" 添加你的域名
-     * 按照提示配置 DNS CNAME 记录指向 Zeabur 提供的目标地址
-   - 设置完域名后即可通过域名访问 LunaTV
-
-6. **绑定自定义域名（可选）**
-   - 在服务设置中点击 "Domains"
-   - 添加你的自定义域名
-   - 配置 DNS CNAME 记录指向 Zeabur 提供的域名
-
-#### 🔄 更新 Docker 镜像
-
-当 Docker 镜像有新版本发布时，Zeabur 不会自动更新。需要手动触发更新。
-
-**更新步骤：**
-
-1. **进入服务页面**
-   - 点击需要更新的服务（LunaTV 或 KVRocks）
-
-2. **重启服务**
-   - 点击 **"服务状态"** 页面，再点击 **"重启当前版本"** 按钮
-   - Zeabur 会自动拉取最新的 `latest` 镜像并重新部署
-
-> 💡 **提示**：
-> - 使用 `latest` 标签时，Restart 会自动拉取最新镜像
-> - 生产环境推荐使用固定版本标签（如 `v5.5.6`）避免意外更新
-
-## 配置文件
-
-完成部署后为空壳应用，无播放源，需要站长在管理后台的配置文件设置中填写配置文件（后续会支持订阅）
-
-配置文件示例如下：
-
-```json
-{
-  "cache_time": 7200,
-  "api_site": {
-    "dyttzy": {
-      "api": "http://xxx.com/api.php/provide/vod",
-      "name": "示例资源",
-      "detail": "http://xxx.com"
-    }
-    // ...更多站点
-  },
-  "custom_category": [
-    {
-      "name": "华语",
-      "type": "movie",
-      "query": "华语"
-    }
-  ]
-}
-```
-
-- `cache_time`：接口缓存时间（秒）。
-- `api_site`：你可以增删或替换任何资源站，字段说明：
-  - `key`：唯一标识，保持小写字母/数字。
-  - `api`：资源站提供的 `vod` JSON API 根地址。
-  - `name`：在人机界面中展示的名称。
-  - `detail`：（可选）部分无法通过 API 获取剧集详情的站点，需要提供网页详情根 URL，用于爬取。
-- `custom_category`：自定义分类配置，用于在导航中添加个性化的影视分类。以 type + query 作为唯一标识。支持以下字段：
-  - `name`：分类显示名称（可选，如不提供则使用 query 作为显示名）
-  - `type`：分类类型，支持 `movie`（电影）或 `tv`（电视剧）
-  - `query`：搜索关键词，用于在豆瓣 API 中搜索相关内容
-
-custom_category 支持的自定义分类已知如下：
-
-- movie：热门、最新、经典、豆瓣高分、冷门佳片、华语、欧美、韩国、日本、动作、喜剧、爱情、科幻、悬疑、恐怖、治愈
-- tv：热门、美剧、英剧、韩剧、日剧、国产剧、港剧、日本动画、综艺、纪录片
-
-也可输入如 "哈利波特" 效果等同于豆瓣搜索
-
-MoonTV 支持标准的苹果 CMS V10 API 格式。
-
-## 订阅
-
-将完整的配置文件 base58 编码后提供 http 服务即为订阅链接，可在 MoonTV 后台/Helios 中使用。
-
-## 自动更新
-
-可借助 [watchtower](https://github.com/containrrr/watchtower) 自动更新镜像容器
-
-dockge/komodo 等 docker compose UI 也有自动更新功能
-
-## 环境变量
-
-| 变量                                | 说明                                         | 可选值                           | 默认值                                                                                                                     |
-| ----------------------------------- | -------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| USERNAME                            | 站长账号           | 任意字符串                       | 无默认，必填字段                                                                                                                     |
-| PASSWORD                            | 站长密码           | 任意字符串                       | 无默认，必填字段                                                                                                                     |
-| SITE_BASE                           | 站点 url              |       形如 https://example.com                  | 空                                                                                                                     |
-| NEXT_PUBLIC_SITE_NAME               | 站点名称                                     | 任意字符串                       | MoonTV                                                                                                                     |
-| ANNOUNCEMENT                        | 站点公告                                     | 任意字符串                       | 本网站仅提供影视信息搜索服务，所有内容均来自第三方网站。本站不存储任何视频资源，不对任何内容的准确性、合法性、完整性负责。 |
-| NEXT_PUBLIC_STORAGE_TYPE            | 播放记录/收藏的存储方式                      | redis、kvrocks、upstash | 无默认，必填字段                                                                                                               |
-| KVROCKS_URL                           | kvrocks 连接 url                               | 连接 url                         | 空                                                                                                                         |
-| REDIS_URL                           | redis 连接 url                               | 连接 url                         | 空                                                                                                                         |
-| UPSTASH_URL                         | upstash redis 连接 url                       | 连接 url                         | 空                                                                                                                         |
-| UPSTASH_TOKEN                       | upstash redis 连接 token                     | 连接 token                       | 空                                                                                                                         |
-| NEXT_PUBLIC_SEARCH_MAX_PAGE         | 搜索接口可拉取的最大页数                     | 1-50                             | 5                                                                                                                          |
-| NEXT_PUBLIC_DOUBAN_PROXY_TYPE       | 豆瓣数据源请求方式                           | 见下方                           | direct                                                                                                                     |
-| NEXT_PUBLIC_DOUBAN_PROXY            | 自定义豆瓣数据代理 URL                       | url prefix                       | (空)                                                                                                                       |
-| NEXT_PUBLIC_DOUBAN_IMAGE_PROXY_TYPE | 豆瓣图片代理类型                             | 见下方                           | direct                                                                                                                     |
-| NEXT_PUBLIC_DOUBAN_IMAGE_PROXY      | 自定义豆瓣图片代理 URL                       | url prefix                       | (空)                                                                                                                       |
-| NEXT_PUBLIC_DISABLE_YELLOW_FILTER   | 关闭色情内容过滤                             | true/false                       | false                                                                                                                      |
-| NEXT_PUBLIC_FLUID_SEARCH | 是否开启搜索接口流式输出 | true/ false | true |
-
-NEXT_PUBLIC_DOUBAN_PROXY_TYPE 选项解释：
-
-- direct: 由服务器直接请求豆瓣源站
-- cors-proxy-zwei: 浏览器向 cors proxy 请求豆瓣数据，该 cors proxy 由 [Zwei](https://github.com/bestzwei) 搭建
-- cmliussss-cdn-tencent: 浏览器向豆瓣 CDN 请求数据，该 CDN 由 [CMLiussss](https://github.com/cmliu) 搭建，并由腾讯云 cdn 提供加速
-- cmliussss-cdn-ali: 浏览器向豆瓣 CDN 请求数据，该 CDN 由 [CMLiussss](https://github.com/cmliu) 搭建，并由阿里云 cdn 提供加速
-- custom: 用户自定义 proxy，由 NEXT_PUBLIC_DOUBAN_PROXY 定义
-
-NEXT_PUBLIC_DOUBAN_IMAGE_PROXY_TYPE 选项解释：
-
-- direct：由浏览器直接请求豆瓣分配的默认图片域名
-- server：由服务器代理请求豆瓣分配的默认图片域名
-- img3：由浏览器请求豆瓣官方的精品 cdn（阿里云）
-- cmliussss-cdn-tencent：由浏览器请求豆瓣 CDN，该 CDN 由 [CMLiussss](https://github.com/cmliu) 搭建，并由腾讯云 cdn 提供加速
-- cmliussss-cdn-ali：由浏览器请求豆瓣 CDN，该 CDN 由 [CMLiussss](https://github.com/cmliu) 搭建，并由阿里云 cdn 提供加速
-- custom: 用户自定义 proxy，由 NEXT_PUBLIC_DOUBAN_IMAGE_PROXY 定义
-
-## 客户端
-
-v100.0.0 以上版本可配合 [Selene](https://github.com/MoonTechLab/Selene) 使用，移动端体验更加友好，数据完全同步
-
-## AndroidTV 使用
-
-目前该项目可以配合 [OrionTV](https://github.com/zimplexing/OrionTV) 在 Android TV 上使用，可以直接作为 OrionTV 后端
-
-已实现播放记录和网页端同步
-
-## 安全与隐私提醒
-
-### 请设置密码保护并关闭公网注册
-
-为了您的安全和避免潜在的法律风险，我们要求在部署时**强烈建议关闭公网注册**：
-
-### 部署要求
-
-1. **设置环境变量 `PASSWORD`**：为您的实例设置一个强密码
-2. **仅供个人使用**：请勿将您的实例链接公开分享或传播
-3. **遵守当地法律**：请确保您的使用行为符合当地法律法规
-
-### 重要声明
-
-- 本项目仅供学习和个人使用
+- 本项目仅供学习和个人使用，为避免版权纠纷，必须设置PASSWORD环境变量
 - 请勿将部署的实例用于商业用途或公开服务
 - 如因公开分享导致的任何法律问题，用户需自行承担责任
 - 项目开发者不对用户的使用行为承担任何法律责任
-- 本项目不在中国大陆地区提供服务。如有该项目在向中国大陆地区提供服务，属个人行为。在该地区使用所产生的法律风险及责任，属于用户个人行为，与本项目无关，须自行承担全部责任。特此声明
 
-## License
+## ⚠️ 同步与升级
 
-[MIT](LICENSE) © 2025 MoonTV & Contributors
+Pull Bot 会反复触发无效的 PR 和垃圾邮件，严重干扰项目维护。作者可能会直接拉黑所有 Pull Bot 自动发起的同步请求的仓库所有者。
 
-## 致谢
+**推荐做法：**
 
-- [ts-nextjs-tailwind-starter](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter) — 项目最初基于该脚手架。
-- [LibreTV](https://github.com/LibreSpark/LibreTV) — 由此启发，站在巨人的肩膀上。
-- [ArtPlayer](https://github.com/zhw2590582/ArtPlayer) — 提供强大的网页视频播放器。
-- [HLS.js](https://github.com/video-dev/hls.js) — 实现 HLS 流媒体在浏览器中的播放支持。
-- [Zwei](https://github.com/bestzwei) — 提供获取豆瓣数据的 cors proxy
-- [CMLiussss](https://github.com/cmliu) — 提供豆瓣 CDN 服务
-- 感谢所有提供免费影视接口的站点。
+建议在 fork 的仓库中启用本仓库自带的 GitHub Actions 自动同步功能（见 `.github/workflows/sync.yml`）。 
 
-## Star History
+如需手动同步主仓库更新，也可以使用 GitHub 官方的 [Sync fork](https://docs.github.com/cn/github/collaborating-with-issues-and-pull-requests/syncing-a-fork) 功能。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=MoonTechLab/LunaTV&type=Date)](https://www.star-history.com/#MoonTechLab/LunaTV&Date)
+对于更新后可能会出现的错误和异常，在设置中备份配置后，首先清除页面Cookie，然后 Ctrl + F5 刷新页面。再次访问网页检查是否解决问题。
+
+
+## 📋 详细部署指南
+
+### Cloudflare Pages
+
+1. Fork 或克隆本仓库到您的 GitHub 账户
+2. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)，进入 Pages 服务
+3. 点击"创建项目"，连接您的 GitHub 仓库
+4. 使用以下设置：
+   - 构建命令：留空（无需构建）
+   - 输出目录：留空（默认为根目录）
+5. **⚠️ 重要：在"设置" > "环境变量"中添加 `PASSWORD` 变量（必须设置）**
+6. 点击"保存并部署"
+
+### Vercel
+
+1. Fork 或克隆本仓库到您的 GitHub/GitLab 账户
+2. 登录 [Vercel](https://vercel.com/)，点击"New Project"
+3. 导入您的仓库，使用默认设置
+4. **⚠️ 重要：在"Settings" > "Environment Variables"中添加 `PASSWORD` 变量（必须设置）**
+5. 点击"Deploy"
+
+
+### Docker
+```
+docker run -d \
+  --name libretv \
+  --restart unless-stopped \
+  -p 8899:8080 \
+  -e PASSWORD=your_password \
+  bestzwei/libretv:latest
+```
+
+### Docker Compose
+
+`docker-compose.yml` 文件：
+
+```yaml
+services:
+  libretv:
+    image: bestzwei/libretv:latest
+    container_name: libretv
+    ports:
+      - "8899:8080" # 将内部 8080 端口映射到主机的 8899 端口
+    environment:
+      - PASSWORD=${PASSWORD:-111111} # 可将 111111 修改为你想要的密码，默认为 your_password
+    restart: unless-stopped
+```
+启动 LibreTV：
+
+```bash
+docker compose up -d
+```
+访问 `http://localhost:8899` 即可使用。
+
+### 本地开发环境
+
+项目包含后端代理功能，需要支持服务器端功能的环境：
+
+```bash
+# 首先，通过复制示例来设置 .env 文件（可选）
+cp .env.example .env
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+访问 `http://localhost:8080` 即可使用（端口可在.env文件中通过PORT变量修改）。
+
+> ⚠️ 注意：使用简单静态服务器（如 `python -m http.server` 或 `npx http-server`）时，视频代理功能将不可用，视频无法正常播放。完整功能测试请使用 Node.js 开发服务器。
+
+## 🔧 自定义配置
+
+### 密码保护
+
+**重要提示**: 为确保安全，所有部署都必须设置 PASSWORD 环境变量，否则用户将看到设置密码的提示。
+
+
+### API兼容性
+
+LibreTV 支持标准的苹果 CMS V10 API 格式。添加自定义 API 时需遵循以下格式：
+- 搜索接口: `https://example.com/api.php/provide/vod/?ac=videolist&wd=关键词`
+- 详情接口: `https://example.com/api.php/provide/vod/?ac=detail&ids=视频ID`
+
+**添加 CMS 源**:
+1. 在设置面板中选择"自定义接口"
+2. 接口地址: `https://example.com/api.php/provide/vod`
+
+## ⌨️ 键盘快捷键
+
+播放器支持以下键盘快捷键：
+
+- **空格键**: 播放/暂停
+- **左右箭头**: 快退/快进
+- **上下箭头**: 音量增加/减小
+- **M 键**: 静音/取消静音
+- **F 键**: 全屏/退出全屏
+- **Esc 键**: 退出全屏
+
+## 🛠️ 技术栈
+
+- HTML5 + CSS3 + JavaScript (ES6+)
+- Tailwind CSS
+- HLS.js 用于 HLS 流处理
+- DPlayer 视频播放器核心
+- Cloudflare/Vercel/Netlify Serverless Functions
+- 服务端 HLS 代理和处理技术
+- localStorage 本地存储
+
+## ⚠️ 免责声明
+
+LibreTV 仅作为视频搜索工具，不存储、上传或分发任何视频内容。所有视频均来自第三方 API 接口提供的搜索结果。如有侵权内容，请联系相应的内容提供方。
+
+本项目开发者不对使用本项目产生的任何后果负责。使用本项目时，您必须遵守当地的法律法规。
+
+## 🤝 衍生项目
+
+它们提供了更多丰富的自定义功能，欢迎体验~
+
+- **[MoonTV](https://github.com/senshinya/MoonTV)**  
+- **[OrionTV](https://github.com/zimplexing/OrionTV)**  
+
+## 🥇 感谢支持
+
+- **[Sharon](https://sharon.io)**
+- **[ZMTO](https://zmto.com)**
+- **[YXVM](https://yxvm.com)**  
